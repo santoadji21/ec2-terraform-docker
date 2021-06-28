@@ -1,0 +1,24 @@
+####################################################################
+# Authors: Ahmad Aji Santoso
+# Email: ahmad21@student.ub.ac.id
+####################################################################
+
+---
+- name: Deploy Moodle On AWS Ec2 Using Docker Compose
+  hosts: moodle
+  become: true
+  gather_facts: False
+  remote_user: ubuntu
+  tasks:
+    - name: Clone Compose File From Github
+      git:
+        repo: https://github.com/santoadji21/moodle-docker-compose.git
+        dest: /home/ubuntu/mdl-docker-compose
+
+    - name: Running Compose File
+      command: chdir=/home/ubuntu/mdl-docker-compose make up
+      register: deploy
+
+    - name: Show Result
+      debug:
+        var: deploy.stdout
